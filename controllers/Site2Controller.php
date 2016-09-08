@@ -184,7 +184,15 @@ class Site2Controller extends Controller {
 							$org->saved = '1';
 							$org->save(false,NULL,'register');
 							usleep(600000);
+						} else {
+							$org = Organization::findOne($kontr->id);
+							$org->saved = '1';
+							$org->save(false,NULL,'register');
 						}
+					} else {
+						$org = Organization::findOne($kontr->id);
+						$org->saved = '1';
+						$org->save(false,NULL,'register');
 					}
 					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->andWhere(['or',['saved'=>'0'],['saved'=>NULL]])->all();
 					foreach ($accounts as $acc) {

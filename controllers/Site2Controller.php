@@ -151,7 +151,7 @@ class Site2Controller extends Controller {
 
     public function actionSave1c() {
 		if (Yii::$app->user->isGuest === false) {
-			$kontragent = Organization::find()->where('saved'=>'0')->all();
+			$kontragent = Organization::find()->where(['saved'=>'0'])->all();
 			//$path = "D:\\v7\\SSTDB";
 			$path = "\\\\EKSPERT-101\\1c-base\\SSTDB";//пример
 			//$path = '"\\\\EKSPERT-101\\1c-base\\бухгалтерия и зарплата\\SSTDB НЭ"';//оригинал

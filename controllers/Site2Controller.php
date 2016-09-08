@@ -151,7 +151,7 @@ class Site2Controller extends Controller {
 
     public function actionSave1c() {
 		if (Yii::$app->user->isGuest === false) {
-			$kontragent = Organization::find()->where(['or','saved'=>'0','saved'=>NULL])->all();
+			$kontragent = Organization::find()->where(['or',"saved='0'",'saved=NULL'])->all();
 			//$path = "D:\\v7\\SSTDB";
 			$path = "\\\\EKSPERT-101\\1c-base\\SSTDB";//пример
 			//$path = '"\\\\EKSPERT-101\\1c-base\\бухгалтерия и зарплата\\SSTDB НЭ"';//оригинал
@@ -186,7 +186,7 @@ class Site2Controller extends Controller {
 							usleep(600000);
 						}
 					}
-					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->andWhere(['or','saved'=>'0','saved'=>NULL])->all();
+					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->andWhere(['or',"saved='0'",'saved=NULL'])->all();
 					foreach ($accounts as $acc) {
 						$obj_acc = $app->CreateObject("Справочник.РасчетныеСчета");
 						if ($obj_acc->НайтиПоРеквизиту("Номер",iconv("UTF-8", "cp1251", $acc->kontrAccount),1) == 0) {
@@ -243,7 +243,7 @@ class Site2Controller extends Controller {
 
 
 
-					$contracts = Contracts::find()->where(['idKontr' => $kontr->id])->andWhere(['or','saved'=>'0','saved'=>NULL])->all();
+					$contracts = Contracts::find()->where(['idKontr' => $kontr->id])->andWhere(['or',"saved='0'",'saved=NULL'])->all();
 					foreach ($contracts as $contr) {
 						$obj_contr = $app->CreateObject("Справочник.Договоры");
 						if ($obj_contr->НайтиПоНаименованию("№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", $contr->dateContract),0) == 0) {

@@ -16,7 +16,7 @@ class Organization extends ActiveRecord
             [['name', 'fullName', 'inn','name1c'], 'required', 'message' => 'Поле обязательно для заполнения'],
             //[['inn','kpp'],'unique','comboNotUnique' => 'Контрагент с такой парой ИНН/КПП уже существует','targetAttribute' =>['inn', 'kpp']],
 			[['inn'],'unique','message' => 'Контрагент с таким ИНН уже существует'],
-            [['okpo','ogrn','rukovod','saved','phone','email','kpp','addressfact', 'address'],'trueValid']
+            [['okpo','ogrn','rukovod','saved','phone','email','kpp','addressfact', 'address','addressreg'],'trueValid']
             ];
     }
     
@@ -81,25 +81,30 @@ protected function is_valid_inn( $inn )
     return false;
 }
  
-    public function save($runValidation = false, $attributeNames = NULL)
+    public function save($runValidation = false, $attributeNames = NULL, $mode = NULL)
     {
-        $this->inn = str_replace("_", "",$this->inn);
-        if ((strlen($this->inn) != 10)&&(strlen($this->inn) != 12)) {
-            $this->addError('inn',"Длина ИНН должна быть равна 10 или 12 символам ");
-            return false;
-        }
-         if ($this->is_valid_inn($this->inn)) {
-            date_default_timezone_set( 'Europe/Moscow' );
-            $this->dateReg = date("Y-m-d");
-            // if (!isset($this->rukovod)){
-                // $this->rukovod = '123';
-            // }
+        if ($mode != 'register'){
+            $this->inn = str_replace("_", "",$this->inn);
+            if ((strlen($this->inn) != 10)&&(strlen($this->inn) != 12)) {
+                $this->addError('inn',"Длина ИНН должна быть равна 10 или 12 символам ");
+                return false;
+            }
+             if ($this->is_valid_inn($this->inn)) {
+                date_default_timezone_set( 'Europe/Moscow' );
+                $this->dateReg = date("Y-m-d");
+                $this->saved = '0';
+                // if (!isset($this->rukovod)){
+                    // $this->rukovod = '123';
+                // }
 
-            return parent::save($runValidation);//родительский метод save
-         } else {
-             $this->addError('inn','ИНН введен неверно - ошибка проверки контрольного разряда');
-             return false;
-         }
+                return parent::save($runValidation);//родительский метод save
+             } else {
+                 $this->addError('inn','ИНН введен неверно - ошибка проверки контрольного разряда');
+                 return false;
+             }
+        } else {
+            return parent::save($runValidation);
+        }
     }    
     
 }

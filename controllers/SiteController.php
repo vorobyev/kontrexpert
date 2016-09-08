@@ -470,7 +470,8 @@ class SiteController extends Controller
         $ogrn = Yii::$app->request->post()['ogrn'];
         $okpo = Yii::$app->request->post()['okpo'];
         $address = Yii::$app->request->post()['address'];
-		$addressfact = Yii::$app->request->post()['addressfact'];
+	$addressfact = Yii::$app->request->post()['addressfact'];
+        $addressreg = Yii::$app->request->post()['addressreg'];
         $rukovod = Yii::$app->request->post()['rukovod'];
         $account = Yii::$app->request->post()['account'];
         $volume = Yii::$app->request->post()['volume'];
@@ -527,7 +528,13 @@ class SiteController extends Controller
             $exapp->Columns($column)->ColumnWidth = 15;
             $column+=1;
             $symb+=1;           
-        }       
+        }    
+        if ($addressreg == 'true'){
+            $exapp->Range(chr($symb).'1')->Value = iconv("UTF-8", "cp1251", 'Адрес регистрации');
+            $exapp->Columns($column)->ColumnWidth = 15;
+            $column+=1;
+            $symb+=1;           
+        }  
         if ($addressfact == 'true'){
             $exapp->Range(chr($symb).'1')->Value = iconv("UTF-8", "cp1251", 'Факт. адрес');
             $exapp->Columns($column)->ColumnWidth = 15;
@@ -586,7 +593,7 @@ class SiteController extends Controller
         $col = $contracts = Contracts::find()->count()+1;
         $contracts = Contracts::find()->where(['>=', 'dateContract', $date1])->andWhere(['<=', 'dateContract', $date2])->all();
         $exapp->Range("A1:".chr($symb).(string)$col)->NumberFormat = "@";
-		try {
+	
         foreach ($contracts as $contr) {
             $symb = ord("A");            
             $exapp->Range(chr($symb).(string)$str)->Value = iconv("UTF-8", "cp1251", $contr->numberContract);
@@ -618,13 +625,17 @@ class SiteController extends Controller
             } 
             if ($address == 'true'){
 				$str2 = $kontr->address;
-				if ($kontr->phone!=""){
+				if (($kontr->phone!="")&&($str2!="")){
 					$str2.="; тел: ".$kontr->phone;
 				}
                 $exapp->Range(chr($symb).(string)$str)->Value = iconv("UTF-8", "cp1251", $str2);
                 $symb+=1;                  
             } 
-			if ($addressfact == 'true'){
+            if ($addressreg == 'true'){
+                $exapp->Range(chr($symb).(string)$str)->Value = iconv("UTF-8", "cp1251", $kontr->addressreg);
+                $symb+=1;                  
+            } 
+	    if ($addressfact == 'true'){
                 $exapp->Range(chr($symb).(string)$str)->Value = iconv("UTF-8", "cp1251", $kontr->addressfact);
                 $symb+=1;                  
             } 
@@ -696,10 +707,7 @@ class SiteController extends Controller
             $str+=1;
             
         }
-        } catch (Exception $e) {
-			$g = $e->getMessage();
-			echo 123;
-		}	
+	
         date_default_timezone_set( 'Europe/Moscow' );
         $filename = "reestr_".date("Y-m-d___H-i-s")."(".$date1."__".$date2.")"; 
         $exapp->Workbooks[1]->SaveAs(Yii::getAlias('@app').'/web/reestr/'.(string)$filename.".xlsx");

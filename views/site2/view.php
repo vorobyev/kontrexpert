@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= "<br/>"."<br/>".Html::a('Перейти к банковским счетам ->>', Url::toRoute(['site/clients', 'kontrid' => $model->id,'accounts'=>'1'])) ?>
         <?= "<br/>".Html::a('Перейти к договорам ->>', Url::toRoute(['site/clients', 'kontrid' => $model->id,'contracts'=>'1'])) ?>
     </p>
-
+    <?php if (strlen($model->inn)==10): ?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -99,5 +99,74 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ],
     ]) ?>
-
+    
+    <?php else: ?>
+    
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            [        
+                'attribute' => 'name',
+                'format' => 'ntext',
+                'label' => 'Сокр. наименование'
+            ],
+            [        
+                'attribute' => 'fullName',
+                'format' => 'ntext',
+                'label' => 'Наименование'
+            ],
+			[        
+                'attribute' => 'name1c',
+                'format' => 'ntext',
+                'label' => 'Наименование для 1С'
+            ],
+            [        
+                'attribute' => 'addressreg',
+                'format' => 'ntext',
+                'label' => 'Адрес регистрации'
+            ],
+			[        
+                'attribute' => 'addressfact',
+                'format' => 'ntext',
+                'label' => 'Факт. адрес'
+            ],
+            [        
+                'attribute' => 'inn',
+                'format' => 'text',
+                'label' => 'ИНН'
+            ],
+            [        
+                'attribute' => 'ogrn',
+                'format' => 'text',
+                'label' => 'ОГРН'
+            ],
+            [        
+                'attribute' => 'okpo',
+                'format' => 'text',
+                'label' => 'ОКПО'
+            ],
+            [        
+                'attribute' => 'rukovod',
+                'format' => 'ntext',
+                'label' => 'Руководитель'
+            ],
+            [        
+                'attribute' => 'phone',
+                'format' => 'text',
+                'label' => 'Телефон'
+            ],
+            [        
+                'attribute' => 'email',
+                'format' => 'text',
+                'label' => 'E-mail'
+            ],
+            [        
+                'attribute' => 'dateReg',
+                'format' => 'text',
+                'label' => 'Дата регистрации в системе'
+            ]
+        ],
+    ]) ?>    
+<?php endif;?>
 </div>

@@ -279,11 +279,11 @@ if ($contracts) {
            ActiveForm::end();    
            Modal::end();
     }
-	$last_contr = Contracts::find()->orderBy('id')->limit(3)->all();
+	$last_contr = Contracts::find()->orderBy('id DESC')->limit(3)->all();
 	$str = "";
 	$count1 = count($last_contr);
 	$i=1;
-	foreach ($last_contr as $contr1){
+	foreach (array_reverse($last_contr) as $contr1){
 		if ($i==1) {
 			$str = $str."№".$contr1->numberContract." от ".$contr1->dateContract."<br/>";
 		} else if ($i==$count1) {
@@ -599,12 +599,15 @@ if ($contracts) {
                     $sum = $hist->summ." (".num_propis((int)$hist->summ).")";
                     
                     $rekvisits = "";
-					if (($kontr->address!=null)&&($kontr->address!="")){
-						$rekvisits.= "Адрес юридический: ".$kontr->address.chr(13).chr(10);
-					}
-					if (($kontr->addressfact!=null)&&($kontr->addressfact!="")&&($kontr->addressfact!=$kontr->address)){
-						$rekvisits.= "Адрес фактический: ".$kontr->addressfact.chr(13).chr(10);
-					}
+                    if (($kontr->address!=null)&&($kontr->address!="")){
+                            $rekvisits.= "Адрес юридический: ".$kontr->address.chr(13).chr(10);
+                    }
+                    if (($kontr->addressreg!=null)&&($kontr->addressreg!="")){
+                            $rekvisits.= "Адрес регистрации: ".$kontr->addressreg.chr(13).chr(10);
+                    }                    
+                    if (($kontr->addressfact!=null)&&($kontr->addressfact!="")&&($kontr->addressfact!=$kontr->address)){
+                            $rekvisits.= "Адрес фактический: ".$kontr->addressfact.chr(13).chr(10);
+                    }
                     $rekvisits.= "ИНН ".$kontr->inn.chr(13).chr(10);
                     if (($kontr->kpp!="")&&($kontr->kpp!=NULL)) {
                         $rekvisits.= "КПП ".$kontr->kpp.chr(13).chr(10);
@@ -735,13 +738,14 @@ function num_propis($num){ // $num - цело число
             'labelOptions' => ['class' => 'col-lg-1 control-label'],
         ],
     ]); 
+   $isIp = strlen((string)$model->inn)==12;
    ?>
 
         <?php $tab1=$tab1.$form->field($model, 'inn',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control'],
                 'labelOptions'=>['class'=>'labelMy col-lg-1 control-label']
-            ])->widget(MaskedInput::className(),['mask'=>'999999999999','options'=>['class'=>'inputMy form-control']])->label('ИНН'); 
+            ])->widget(MaskedInput::className(),['mask'=>'999999999999','options'=>['class'=>'inputMy form-control','onChange'=>'changeForm();']])->label('ИНН'); 
 			//])->label('ИНН'); 
 $tab1=$tab1."<div class='myBtnInn'>";
 $tab1=$tab1. Html::button('Заполнить по ИНН данные контрагента',['class'=>'btn btn-primary','onClick'=>'getJsonInn();'])."</div>";
@@ -762,9 +766,14 @@ $tab1=$tab1.$form->field($model, 'name1c',[
             ])->label('Наименование для 1С (0/30 символов)');
 $tab1=$tab1.$form->field($model, 'address',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
-                'inputOptions'=>['class'=>'inputMy form-control'],
-                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label']
+                'inputOptions'=>['class'=>'inputMy form-control','style'=>($isIp)?'display:none':'display:inline-block'],
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline']
             ])->label('Юр. адрес');
+$tab1=$tab1.$form->field($model, 'addressreg',[
+                'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}",
+                'inputOptions'=>['class'=>'inputMy form-control','style'=>'display:none','style'=>($isIp)?'display:inline-block':'display:none'],
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>'display:none','style'=>($isIp)?'display:inline':'display:none']
+            ])->label('Адрес регистрации ИП');
 $tab1=$tab1.$form->field($model, 'addressfact',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control'],
@@ -772,8 +781,8 @@ $tab1=$tab1.$form->field($model, 'addressfact',[
             ])->label('Факт. адрес');
 $tab1=$tab1.$form->field($model, 'kpp',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
-                'inputOptions'=>['class'=>'inputMy form-control'],
-                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label']
+                'inputOptions'=>['class'=>'inputMy form-control','style'=>($isIp)?'display:none':'display:inline-block'],
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline']
             ])->label('КПП');
 $tab1=$tab1.$form->field($model, 'okpo',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
@@ -806,7 +815,7 @@ if (!$kontr) {
 }
 $tab1=$tab1.$form->field($model, 'rukovod',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
-                'inputOptions'=>['class'=>'inputMy form-control','readonly'=>($kontr)?false:true],
+                'inputOptions'=>['class'=>'inputMy form-control','readonly'=>($isIp||$kontr)?false:true],
                 'labelOptions'=>['class'=>'labelMy col-lg-1 control-label']
             ])->label('Руководитель');
 

@@ -743,11 +743,14 @@ function getJsonInn(){
 		$('#organization-kpp').css('display','inline');
 		$('label[for="organization-kpp"]').css('display','inline-block');
 		
-		$('#organization-rukovod').css('display','inline');
-		$('label[for="organization-rukovod"]').css('display','inline-block');
+		$('#organization-rukovod').attr('readonly',true);
+		//$('label[for="organization-rukovod"]').attr('readonly',true);
 		
 		$('#organization-rukovod2').css('display','inline');
 		$('label[for="organization-rukovod2"]').css('display','inline-block');
+                
+                $('#organization-addressreg').css('display','none');
+		$('label[for="organization-addressreg"]').css('display','none');
 		
 		$('#red_ruk').css('display','inline');
 		$('input[name="myCheck"]').css('display','inline-block');
@@ -760,12 +763,15 @@ function getJsonInn(){
 		$('#organization-kpp').css('display','none');
 		$('label[for="organization-kpp"]').css('display','none');
 		
-		$('#organization-rukovod').css('display','none');
-		$('label[for="organization-rukovod"]').css('display','none');
+		$('#organization-rukovod').attr('readonly',false);
+		//$('label[for="organization-rukovod"]').css('readonly',false);
 		
 		$('#organization-rukovod2').css('display','none');
 		$('label[for="organization-rukovod2"]').css('display','none');
 		
+                $('#organization-addressreg').css('display','inline');
+		$('label[for="organization-addressreg"]').css('display','inline-block');
+                
 		$('#red_ruk').css('display','none');
 		$('input[name="myCheck"]').css('display','none');
 		$.get("https://огрн.онлайн/интеграция/ип/?инн="+inn, GetIdIp);
@@ -787,9 +793,56 @@ function GetIdIp (data)
 	$("label[for='organization-name1c']").html("Наименование для 1С ("+$("#organization-name1c").val().length+"/30 символов)");
     $('#organization-ogrn').val(data[0].ogrn);
     $('#organization-address').val("");
+    $('#organization-addressreg').val("");
 	$('#organization-addressfact').val("");
 	$('#organization-okpo').val("");
 	$('#organization-kpp').val("");
+}
+
+function changeForm(){
+    inn = $('#organization-inn').val().replace(/[_]+/g,"");
+    if (inn.length == 12){
+        $('#organization-address').val("");
+        $('#organization-kpp').val("");
+        $('#organization-address').css('display','none');
+        $('label[for="organization-address"]').css('display','none');
+
+        $('#organization-kpp').css('display','none');
+        $('label[for="organization-kpp"]').css('display','none');
+
+        $('#organization-rukovod').attr('readonly',false);
+        //$('label[for="organization-rukovod"]').css('readonly',false);
+
+        $('#organization-rukovod2').css('display','none');
+        $('label[for="organization-rukovod2"]').css('display','none');
+
+        $('#organization-addressreg').css('display','inline');
+        $('label[for="organization-addressreg"]').css('display','inline-block');
+
+        $('#red_ruk').css('display','none');
+        $('input[name="myCheck"]').css('display','none');
+    } else if (inn.length == 10) {
+        $('#organization-addressreg').val("");
+        $('#organization-address').css('display','inline');
+        $('label[for="organization-address"]').css('display','inline-block');
+
+        $('#organization-kpp').css('display','inline');
+        $('label[for="organization-kpp"]').css('display','inline-block');
+
+        $('#organization-rukovod').attr('readonly',true);
+        //$('label[for="organization-rukovod"]').attr('readonly',true);
+
+        $('#organization-rukovod2').css('display','inline');
+        $('label[for="organization-rukovod2"]').css('display','inline-block');
+
+        $('#organization-addressreg').css('display','none');
+        $('label[for="organization-addressreg"]').css('display','none');
+
+        $('#red_ruk').css('display','inline');
+        $('input[name="myCheck"]').css('display','inline-block');
+    } else {
+        alert("Длина ИНН должна равняться 10 символам для организаций и 12 символам для ИП");
+    }
 }
 
 function GetFullRequest (data)
@@ -814,6 +867,8 @@ function GetFullRequest (data)
     $('#organization-kpp').val(data.kpp);
     $('#organization-ogrn').val(data.ogrn);
     $('#organization-address').val(data.address.fullHouseAddress.replace(/[,]+/g,", "));
+    $('#organization-addressreg').val("");
+    $('#organization-rukovod').val("");
 	$('#organization-addressfact').val(data.address.fullHouseAddress.replace(/[,]+/g,", "));
     $.get("https://огрн.онлайн/интеграция/компании/"+String(data.id)+"/сотрудники/", GetRukovod); 
 }
@@ -894,7 +949,8 @@ function reestr (){
     ogrn = $('input[name="ogrn"]').is(':checked');
     okpo = $('input[name="okpo"]').is(':checked');
     address = $('input[name="address"]').is(':checked');
-	addressfact = $('input[name="addressfact"]').is(':checked');
+    addressfact = $('input[name="addressfact"]').is(':checked');
+    addressreg = $('input[name="addressreg"]').is(':checked');
     rukovod = $('input[name="rukovod"]').is(':checked');
     account = $('input[name="account"]').is(':checked');
     volume = $('input[name="volume"]').is(':checked');
@@ -916,7 +972,8 @@ function reestr (){
             ogrn: ogrn,
             okpo: okpo,
             address: address,
-			addressfact: addressfact,
+	    addressfact: addressfact,
+            addressreg: addressreg,
             rukovod: rukovod,
             account: account,
             volume: volume,

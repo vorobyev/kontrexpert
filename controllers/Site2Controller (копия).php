@@ -151,7 +151,7 @@ class Site2Controller extends Controller {
 
     public function actionSave1c() {
 		if (Yii::$app->user->isGuest === false) {
-			$kontragent = Organization::find()->where('saved'=>'0')->all();
+			$kontragent = Organization::find()->all();
 			//$path = "D:\\v7\\SSTDB";
 			$path = "\\\\EKSPERT-101\\1c-base\\SSTDB";//пример
 			//$path = '"\\\\EKSPERT-101\\1c-base\\бухгалтерия и зарплата\\SSTDB НЭ"';//оригинал
@@ -166,7 +166,7 @@ class Site2Controller extends Controller {
 				]);
 			} else {
 				foreach ($kontragent as $kontr) {
-					usleep(150000);
+					sleep(1);
 					$obj = $app->CreateObject("Справочник.Контрагенты");
 					if ($obj->НайтиПоРеквизиту("ИНН",iconv("UTF-8", "cp1251", $kontr->inn."/".$kontr->kpp)) == 0) {
 						if ($obj->НайтиПоРеквизиту("ИНН",iconv("UTF-8", "cp1251", $kontr->inn)) == 0) {
@@ -180,13 +180,10 @@ class Site2Controller extends Controller {
 							$obj->УстановитьАтрибут("КодОКПО", iconv("UTF-8", "cp1251", $kontr->okpo));
 							$obj->УстановитьАтрибут("ВидКонтрагента", $app->EvalExpr("Перечисление.ВидыКонтрагентов.Организация"));
 							$obj->Записать();
-							$org = Organization::findOne($kontr->id);
-							$org->saved = '1';
-							$org->save(false,NULL,'register');
-							usleep(600000);
+							sleep(2);
 						}
 					}
-					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->andWhere(['saved' => '0'])->all();
+					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->all();
 					foreach ($accounts as $acc) {
 						$obj_acc = $app->CreateObject("Справочник.РасчетныеСчета");
 						if ($obj_acc->НайтиПоРеквизиту("Номер",iconv("UTF-8", "cp1251", $acc->kontrAccount),1) == 0) {
@@ -203,21 +200,14 @@ class Site2Controller extends Controller {
 								$obj_bank->УстановитьАтрибут("Местонахождение", iconv("UTF-8", "cp1251", $acc->city));
 								$obj_bank->УстановитьАтрибут("Адрес", iconv("UTF-8", "cp1251", $acc->address));
 								$obj_bank->Записать();
-								usleep(500000);
+								sleep(1);
 							}
 							$obj_acc->УстановитьАтрибут("БанкОрганизации", $obj_bank->ТекущийЭлемент());
 							$obj_acc->УстановитьАтрибут("Владелец", $obj->ТекущийЭлемент());
 							$obj_acc->УстановитьНовыйКод();
 							$obj_acc->Записать();
-							$acc_obj = Accounts::findOne($acc->id);
-							$acc_obj->saved = '1';
-							$acc_obj->save(false,null,'1c');
-							usleep(500000);
-						} else {
-							$acc_obj = Accounts::findOne($acc->id);
-							$acc_obj->saved = '1';
-							$acc_obj->save(false,null,'1c');						
-						}
+							sleep(2);
+						} 
 						// else if ($obj_acc->ТекущийЭлемент()->ПолучитьАтрибут("Владелец")->ТекущийЭлемент()!=$obj->ТекущийЭлемент()) {
 							// $obj_acc = $app->CreateObject("Справочник.РасчетныеСчета");
 							// $obj_acc->Новый();
@@ -243,7 +233,7 @@ class Site2Controller extends Controller {
 
 
 
-					$contracts = Contracts::find()->where(['idKontr' => $kontr->id])->andWhere(['saved' => '0'])->all();
+					$contracts = Contracts::find()->where(['idKontr' => $kontr->id])->all();
 					foreach ($contracts as $contr) {
 						$obj_contr = $app->CreateObject("Справочник.Договоры");
 						if ($obj_contr->НайтиПоНаименованию("№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", $contr->dateContract),0) == 0) {
@@ -252,15 +242,8 @@ class Site2Controller extends Controller {
 							$obj_contr->УстановитьАтрибут("Владелец", $obj->ТекущийЭлемент());
 							$obj_contr->УстановитьНовыйКод();
 							$obj_contr->Записать();
-							$contr_obj = Contracts::findOne($contr->id);
-							$contr_obj->saved = '1';
-							$contr_obj->save(false,null,'1c');
 							sleep(1);
-						}  else {
-							$contr_obj = Contracts::findOne($contr->id);
-							$contr_obj->saved = '1';
-							$contr_obj->save(false,null,'1c');				
-						}
+						} 
 						// else if ($obj_contr->ПолучитьАтрибут("Владелец")->ТекущийЭлемент()!=$obj->ТекущийЭлемент()) {
 							// $obj_contr = $app->CreateObject("Справочник.Договоры");
 							// $obj_contr->Новый();

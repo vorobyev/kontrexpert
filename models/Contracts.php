@@ -5,13 +5,15 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
+use app\models\Organization;
+
 class Contracts extends ActiveRecord
 { 
     public function rules() 
     {
         return [
             [['dateContract', 'numberContract'], 'required', 'message' => 'Поле обязательно для заполнения'],
-            [['comments','subj'],'trueValid']
+            [['comments','subj','saved'],'trueValid']
             ];
     }    
     
@@ -25,11 +27,18 @@ class Contracts extends ActiveRecord
         return "Contracts";
     }
     
-    public function save($runValidation = false, $attributeNames = NULL)
+    public function save($runValidation = false, $attributeNames = NULL, $mode = NULL)
     {
-        $this->idKontr = Yii::$app->request->get()['kontrid'];
-        return parent::save($runValidation);//родительский метод save
-
+        if ($mode!='1c'){
+            $this->idKontr = Yii::$app->request->get()['kontrid'];
+            $org = Organization::findOne($this->idKontr);
+            $org->saved = '0';
+            $org->save(false,null,'register');
+            $this->saved = '0';
+            return parent::save($runValidation);//родительский метод save
+        } else {
+            return parent::save($runValidation);
+        }
     }   
     
     public function getClient() {

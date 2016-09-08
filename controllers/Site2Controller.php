@@ -254,9 +254,9 @@ class Site2Controller extends Controller {
 					$contracts = Contracts::find()->where(['idKontr' => $kontr->id])->andWhere(['or',['saved'=>'0'],['saved'=>NULL]])->all();
 					foreach ($contracts as $contr) {
 						$obj_contr = $app->CreateObject("Справочник.Договоры");
-						if ($obj_contr->НайтиПоНаименованию("№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", $contr->dateContract),0) == 0) {
+						if ($obj_contr->НайтиПоНаименованию("№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", date('d.m.Y', strtotime($contr->dateContract))),0) == 0) {
 							$obj_contr->Новый();
-							$obj_contr->УстановитьАтрибут("Наименование", "№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", $contr->dateContract));
+							$obj_contr->УстановитьАтрибут("Наименование", "№".iconv("UTF-8", "cp1251", $contr->numberContract)." от ".iconv("UTF-8", "cp1251", date('d.m.Y', strtotime($contr->dateContract))));
 							$obj_contr->УстановитьАтрибут("Владелец", $obj->ТекущийЭлемент());
 							$obj_contr->УстановитьНовыйКод();
 							$obj_contr->Записать();

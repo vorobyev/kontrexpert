@@ -591,7 +591,7 @@ class SiteController extends Controller
         $str = 2;
         
         $col = $contracts = Contracts::find()->count()+1;
-        $contracts = Contracts::find()->where(['>=', 'dateContract', $date1])->andWhere(['<=', 'dateContract', $date2])->all();
+        $contracts = Contracts::find()->where(['>=', 'dateContract', $date1])->andWhere(['<=', 'dateContract', $date2])->orderBy('dateContract ASC')->all();
         $exapp->Range("A1:".chr($symb).(string)$col)->NumberFormat = "@";
 	
         foreach ($contracts as $contr) {

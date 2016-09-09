@@ -683,7 +683,7 @@ if ($contracts) {
                     echo Html::input('hidden','rekvisits',$rekvisits);
                     echo Html::input('hidden','prilozh',$prilozh);
                     echo Html::input('hidden','volumecifer',(string)$hist->volumeJob);
-                    echo Html::submitButton('Сформировать документ',['class'=>'btn btn-success','onclick'=>'$("#modal-print").modal("hide");$("#modal-print-wait").modal("show");']);
+                    echo Html::submitButton('Сформировать документ',['class'=>'btn btn-success','onclick'=>'$("#modal-print").modal("hide");$("#modal-print-wait").modal("show");setTimeout(\'$("#modal-print-wait").modal("hide")\',3000)']);
                 ActiveForm::end();               
             Modal::end(); 
     }             

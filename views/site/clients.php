@@ -544,6 +544,20 @@ if ($contracts) {
                 
     if ($print) {
             Modal::begin([
+                    'header' => "<h2 align='center'>Вывод печатной формы документа</h2>",
+                    'options'=>['id'=>'modal-print-wait'],
+                    'size'=>'modal-sm',
+                    'clientOptions'=>[
+                        'backdrop'=>'static',
+                        'show'=>false,
+                        'keyboard'=>false
+                    ],
+                ]);
+                echo "<br/><br/><br/><br/><br/><div align='center'>Подождите, идет формирование документа</div><br/><h2 align='center'><img src='file-loader.gif'></h2><br/><br/><br/><br/><br/><br/>";
+            Modal::end();
+        
+        
+            Modal::begin([
                 'header' => "<h2 align='center'>Вывод печатной формы договора</h2>",
                 'options'=>['id'=>'modal-print'],
                 'size'=>'modal-lg',
@@ -669,7 +683,7 @@ if ($contracts) {
                     echo Html::input('hidden','rekvisits',$rekvisits);
                     echo Html::input('hidden','prilozh',$prilozh);
                     echo Html::input('hidden','volumecifer',(string)$hist->volumeJob);
-                    echo Html::submitButton('Сформировать документ',['class'=>'btn btn-success','onclick'=>'$("#modal-print").modal("hide");']);
+                    echo Html::submitButton('Сформировать документ',['class'=>'btn btn-success','onclick'=>'$("#modal-print").modal("hide");$("#modal-print-wait").modal("show");']);
                 ActiveForm::end();               
             Modal::end(); 
     }             

@@ -961,6 +961,8 @@ function reestr (){
 	email = $('input[name="email"]').is(':checked');
 	date1 = $('input[id="datepick1"]').val();
 	date2 = $('input[id="datepick2"]').val();
+        $("#modal-reestr").modal("hide");
+        $("#modal-print-wait").modal("show");
 	
     
    $.ajax({
@@ -986,7 +988,7 @@ function reestr (){
 			date2:date2
         },
         success: function (responseServer) {
-                $("#modal-reestr").modal("hide");
+                $("#modal-print-wait").modal("hide");
                 document.location.href = window.location.protocol+"//"+window.location.hostname+window.location.pathname+'?r=site/down&path='+responseServer;
         }  
     });   

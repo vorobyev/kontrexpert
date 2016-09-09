@@ -28,6 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     
     <?php
+        Modal::begin([
+                    'header' => "<h2 align='center'>Вывод печатной формы документа</h2>",
+                    'options'=>['id'=>'modal-print-wait'],
+                    'size'=>'modal-sm',
+                    'clientOptions'=>[
+                        'backdrop'=>'static',
+                        'show'=>false,
+                        'keyboard'=>false
+                    ],
+                ]);
+                echo "<br/><br/><br/><br/><br/><div align='center'>Подождите, идет формирование документа</div><br/><h2 align='center'><img src='file-loader.gif'></h2><br/><br/><br/><br/><br/><br/>";
+        Modal::end();
+    
          Modal::begin([
             'header' => "<h2 align='center'>Вывод реестра договоров контрагентов</h2>",
             'options'=>['id'=>'modal-reestr'],

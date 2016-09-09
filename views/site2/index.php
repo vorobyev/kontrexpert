@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php
         Modal::begin([
-                    'header' => "<h2 align='center'>Вывод печатной формы документа</h2>",
+                    'header' => "<h2 align='center'>Вывод реестра</h2>",
                     'options'=>['id'=>'modal-print-wait'],
                     'size'=>'modal-sm',
                     'clientOptions'=>[

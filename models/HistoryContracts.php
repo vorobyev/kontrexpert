@@ -10,7 +10,8 @@ class HistoryContracts extends ActiveRecord
     public function rules() 
     {
         return [
-            [['summ','volumeJob'],'integer','message' => 'Введите корректное число!'],
+            [['volumeJob'],'integer','message' => 'Введите корректное число!'],
+            [['summ'],'double','message' => 'Введите корректное число (например 3045.45)!'],
             [['idContr','dateContr'],'trueValid']
         ];
     }    

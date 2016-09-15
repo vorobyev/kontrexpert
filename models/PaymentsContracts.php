@@ -10,7 +10,7 @@ class PaymentsContracts extends ActiveRecord
     public function rules() 
     {
         return [
-            ['summ','integer','message' => 'Введите корректное число!'],
+            ['summ','double','message' => 'Введите корректное число!'],
             [['idContr','datePayment'],'trueValid']
         ];
     }    

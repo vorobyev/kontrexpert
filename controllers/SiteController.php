@@ -161,6 +161,18 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionDevelop()
+    {
+        if (Yii::$app->user->isGuest === false) {
+            return $this->render('develop');    
+         } else {
+		return $this->render('error', [
+                        'message' => 'Недостаточно прав для выполнения запроса. Войдите в систему.',
+                        'name' => 'Ошибка доступа'
+            ]);
+	}
+    }
+    
     /**
      * Displays contact page.
      *

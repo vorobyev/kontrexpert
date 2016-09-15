@@ -42,21 +42,22 @@ ReklamaAsset::register($this)
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
+        'encodeLabels' => false,
         'items' => [
-            ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Контрагенты', 'url' => ['/site2/index']],
+            ['label' => '<span class="glyphicon glyphicon-home"></span> Главная', 'url' => ['/site/index']],
+            ['label' => '<span class="glyphicon glyphicon-user"></span> Контрагенты', 'url' => ['/site2/index']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Войти', 'url' => ['/site/login']]
+                ['label' => '<span class="glyphicon glyphicon-log-in"></span> Войти', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
-                . Html::submitButton(
-                    'Выйти (' . Yii::$app->user->identity->name . ')',
+                . Html::submitButton('<span class="glyphicon glyphicon-log-out"></span> Выйти (' . Yii::$app->user->identity->name . ')',
                     ['class' => 'btn btn-link']
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            ['label' => '<span class="glyphicon glyphicon-console"></span>','url' => ['/site/develop']],
         ],
     ]);
     NavBar::end();

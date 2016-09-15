@@ -415,12 +415,12 @@ if ($contracts) {
                     $pay = 0;
                     foreach($payments as $payment) {
                         if (isset($payment->summ)){
-                            $pay+=(int)$payment->summ;
+                            $pay+=(float)$payment->summ;
                         }
                     }
                     $history = HistoryContracts::find()->where(['idContr'=>$data->id])->orderBy('id DESC')->one();
                     if (isset($history->summ)) {
-                        $credit = (int)$history->summ - $pay;
+                        $credit = (float)$history->summ - $pay;
                     } else {
                         $credit = - $pay;
                     }
@@ -640,6 +640,9 @@ if ($contracts) {
                     }
                     if ($kontr->okpo!="") {
                         $rekvisits.= "ОКПО ".$kontr->okpo.chr(13).chr(10);
+                    }
+                    if ($kontr->email!="") {
+                        $rekvisits.= "E-mail: ".$kontr->email.chr(13).chr(10);
                     }
                     $prilozh = date("d.m.Y", strtotime($contr->dateContract))."г. № ".$contr->numberContract;
                     

@@ -920,7 +920,7 @@ function GetBik (data)
 function addPayment(id){
     id = id.replace("btn","");
     datepayment = $("input[name='datePay"+id+"']").val();
-    sumpayment = $("input[name='sumPay"+id+"']").val();
+    sumpayment = $("input[name='sumPay"+id+"']").val().replace(',','.');
     if (datepayment == '' || sumpayment == '') {
         alert('Заполните оба поля!');
     }

@@ -694,14 +694,14 @@ class SiteController extends Controller
             if ($credit == 'true'){
                 $modelHistory = HistoryContracts::find()->where(['idContr'=>$contr->id])->orderBy('id DESC')->one();
                 if ($modelHistory != NULL) {
-                    $summ = (int)$modelHistory->summ;
+                    $summ = (float)$modelHistory->summ;
                 } else {
                     $summ = 0;
                 }
                 $pays = PaymentsContracts::find()->where(['idContr'=>$contr->id])->all();
                 $cred = 0;
                 foreach ($pays as $pay) {
-                   $cred+=(int)$pay->summ; 
+                   $cred+=(float)$pay->summ; 
                 }
                 $cred = $summ-$cred;
                 

@@ -50,7 +50,7 @@ ReklamaAsset::register($this)
                 ['label' => '<span class="glyphicon glyphicon-log-in"></span> Войти', 'url' => ['/site/login']]
             ) : (
                 '<li>'
-                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
+                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form','style'=>'padding:0px;'])
                 . Html::submitButton('<span class="glyphicon glyphicon-log-out"></span> Выйти (' . Yii::$app->user->identity->name . ')',
                     ['class' => 'btn btn-link']
                 )

@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div>
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
-        <b>15.09.2015</b> - версия 1.0.0
+        <b>15.09.2016</b> - версия 1.0.0
     </p>
     <hr/>
 </div>

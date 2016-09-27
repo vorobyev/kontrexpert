@@ -171,19 +171,35 @@ class Site2Controller extends Controller {
 					if ($obj->НайтиПоРеквизиту("ИНН",iconv("UTF-8", "cp1251", $kontr->inn."/".$kontr->kpp)) == 0) {
 						if ($obj->НайтиПоРеквизиту("ИНН",iconv("UTF-8", "cp1251", $kontr->inn)) == 0) {
 							//$obj = $app->CreateObject("Справочник.Контрагенты");
-							$obj->Новый();
-							$obj->УстановитьНовыйКод();
-							$obj->УстановитьАтрибут("ПолнНаименование", iconv("UTF-8", "cp1251", $kontr->fullName));
-							$obj->УстановитьАтрибут("ЮридическийАдрес", iconv("UTF-8", "cp1251", $kontr->address));
-							$obj->УстановитьАтрибут("ИНН", iconv("UTF-8", "cp1251", $kontr->inn."/".$kontr->kpp));
-							$obj->УстановитьАтрибут("Наименование", iconv("UTF-8", "cp1251", $kontr->name1c));
-							$obj->УстановитьАтрибут("КодОКПО", iconv("UTF-8", "cp1251", $kontr->okpo));
-							$obj->УстановитьАтрибут("ВидКонтрагента", $app->EvalExpr("Перечисление.ВидыКонтрагентов.Организация"));
-							$obj->Записать();
-							$org = Organization::findOne($kontr->id);
-							$org->saved = '1';
-							$org->save(false,NULL,'register');
-							usleep(600000);
+							$obj->ВыбратьЭлементы();
+							$isfind = false;
+							while ($obj->ПолучитьЭлемент() == 1) {
+								if (strpos($obj->ПолучитьАтрибут("ИНН"),$kontr->inn) === false){
+									continue;
+								} else {
+									$isfind = true;
+									break;
+								}
+							} 
+							if ($isfind == false) {
+								$obj->Новый();
+								$obj->УстановитьНовыйКод();
+								$obj->УстановитьАтрибут("ПолнНаименование", iconv("UTF-8", "cp1251", $kontr->fullName));
+								$obj->УстановитьАтрибут("ЮридическийАдрес", iconv("UTF-8", "cp1251", $kontr->address));
+								$obj->УстановитьАтрибут("ИНН", iconv("UTF-8", "cp1251", $kontr->inn."/".$kontr->kpp));
+								$obj->УстановитьАтрибут("Наименование", iconv("UTF-8", "cp1251", $kontr->name1c));
+								$obj->УстановитьАтрибут("КодОКПО", iconv("UTF-8", "cp1251", $kontr->okpo));
+								$obj->УстановитьАтрибут("ВидКонтрагента", $app->EvalExpr("Перечисление.ВидыКонтрагентов.Организация"));
+								$obj->Записать();
+								$org = Organization::findOne($kontr->id);
+								$org->saved = '1';
+								$org->save(false,NULL,'register');
+								usleep(600000);
+							} else {
+								$org = Organization::findOne($kontr->id);
+								$org->saved = '1';
+								$org->save(false,NULL,'register');						
+							}
 						} else {
 							$org = Organization::findOne($kontr->id);
 							$org->saved = '1';
@@ -194,6 +210,7 @@ class Site2Controller extends Controller {
 						$org->saved = '1';
 						$org->save(false,NULL,'register');
 					}
+					
 					$accounts = Accounts::find()->where(['idKontr' => $kontr->id])->andWhere(['or',['saved'=>'0'],['saved'=>NULL]])->all();
 					foreach ($accounts as $acc) {
 						$obj_acc = $app->CreateObject("Справочник.РасчетныеСчета");
@@ -279,6 +296,7 @@ class Site2Controller extends Controller {
 						// }
 					}
 				}
+				
 			}
 			return $this->redirect(['index']);
 		} else {

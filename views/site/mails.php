@@ -105,7 +105,8 @@ echo $form->field($model, 'imageFile')->widget(InputFile::className(), [
     'template'      => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
     'options'       => ['class' => 'form-control'],
     'buttonOptions' => ['class' => 'btn btn-default'],
-    'multiple'      => true       // возможность выбора нескольких файлов
+    'multiple'      => true
+// возможность выбора нескольких файлов
 ])->label("Прикрепленные файлы");
 
 

@@ -6,12 +6,15 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Organization;
+use app\models\Contracts;
+use yii\helpers\ArrayHelper;
 
 /**
  * OrganizationSearch represents the model behind the search form about `app\models\Organization`.
  */
 class OrganizationSearch extends Organization
 {
+    public $contract;
     /**
      * @inheritdoc
      */
@@ -19,7 +22,7 @@ class OrganizationSearch extends Organization
     {
         return [
             [['id'], 'integer'],
-            [['rukovod', 'fullName', 'name', 'inn', 'kpp', 'okpo', 'ogrn', 'dateReg', 'address','email'], 'safe'],
+            [['rukovod', 'fullName', 'name', 'inn', 'kpp', 'okpo', 'ogrn', 'dateReg', 'address','email','contract'], 'safe'],
         ];
     }
 
@@ -59,10 +62,19 @@ class OrganizationSearch extends Organization
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
+        if (!empty($this->contract)){
+            $contracts = Contracts::find()->where(['like', 'numberContract', $this->contract])->all();
+        
+            $contr_ids = [];
+            foreach ($contracts as $contract) {
+                $contr_ids = ArrayHelper::merge($contr_ids, [$contract->idKontr]);
+            }
+            $query->andFilterWhere(['id'=>$contr_ids]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            //'id' => $this->id,
             'dateReg' => $this->dateReg,
         ]);
 
@@ -75,6 +87,7 @@ class OrganizationSearch extends Organization
             ->andFilterWhere(['like', 'ogrn', $this->ogrn])
 			->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'address', $this->address]);
+                
 
         return $dataProvider;
     }

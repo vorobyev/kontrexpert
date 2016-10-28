@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use app\models\TimeHelper;
 use yii\jui\DatePicker;
+use app\models\Contracts;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrganizationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -136,7 +137,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'text',
                 'label' => 'Юр. адрес'
             ],
-
+            [ 
+                'attribute' => 'contract',
+                'format' => 'text',
+                'label' => 'Договоры',
+                'value' => function($data){
+        
+                    $content='';
+                    $contracts = Contracts::find()->where(['idKontr'=>$data->id])->all();
+                    foreach ($contracts as $contract) {
+                        $content = $content.$contract->numberContract.', ';
+                    }
+                    return substr($content,0,strlen($content)-2);
+                }
+            ],
             [
                 'contentOptions'=>['style'=>'font-size:11pt;'],
                 'class' => 'yii\grid\ActionColumn',

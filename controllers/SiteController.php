@@ -192,7 +192,7 @@ class SiteController extends Controller
             $word->Visible = 0;
             $word->WindowState=2;
             $word->DisplayAlerts = 0;
-			if (Yii::$app->request->post()['numberContract'] == '0') {
+			if (Yii::$app->request->post()['numberContract'] == 0 {
 				$path = Yii::getAlias('@app').'/web/dogovor.docx';
 				//$word->Documents->Add();
 				$word->Documents->Open($path);

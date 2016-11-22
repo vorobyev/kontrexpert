@@ -645,7 +645,7 @@ if ($contracts) {
                         $rekvisits.= "E-mail: ".$kontr->email.chr(13).chr(10);
                     }
                     $prilozh = date("d.m.Y", strtotime($contr->dateContract))."г. № ".$contr->numberContract;
-                    
+                    echo "<b>Вид договора:</b> ".Html::dropDownList('formdog',"",['0'=>'СОУТ','1'=>'ПК'],['class'=>'form-control','style'=>'margin-bottom:10px','onChange'=>'changeForm();']); 
                     echo "<b>Полное наименование:</b><br/> ".Html::input('text','fullname',(strlen($kontr->inn) == 10)?$kontr->fullName:$kontr->rukovod,['class'=>'form-control','style'=>'margin-bottom:10px;width:85%;display:inline-block;'])."<span style='font-size:18pt;'>&nbsp;".Html::a('<span class="glyphicon glyphicon-download" style="top:6px"></span>', "", [
                                       'title' => Yii::t('app', 'в нижний регистр'),
                                     'onclick'=>'toLower("1"); return false;'
@@ -679,7 +679,7 @@ if ($contracts) {
                     } else {
 						echo Html::input('hidden','rukovrod',"");
 					}
-					echo "<b>Объем работ (прописью) в склонении (напр., на пятидесяти четырех рабочих местах):</b> ".Html::input('text','volume',num_propis((int)$hist->volumeJob),['class'=>'form-control','style'=>'margin-bottom:10px']);
+					echo "<div id='hiddVal'><b>Объем работ (прописью) в склонении (напр., на пятидесяти четырех рабочих местах):</b> ".Html::input('text','volume',num_propis((int)$hist->volumeJob),['class'=>'form-control','style'=>'margin-bottom:10px'])."</div>";
                     echo Html::input('hidden','numberContract',$contr->numberContract);
                     echo Html::input('hidden','dateContract',$dateContr);
                     echo Html::input('hidden','sum',$sum);

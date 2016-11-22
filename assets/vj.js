@@ -1072,3 +1072,12 @@ function sendLaters(){
 	});
 	
 }
+
+function changeForm(){
+	if ($("select[name='formdog']").val() == 1) {
+		$('#hiddVal').css('display','none');
+	} else {
+		$('#hiddVal').css('display','block');
+	}
+	
+}

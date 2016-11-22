@@ -192,35 +192,61 @@ class SiteController extends Controller
             $word->Visible = 0;
             $word->WindowState=2;
             $word->DisplayAlerts = 0;
-            $path = Yii::getAlias('@app').'/web/dogovor.docx';
-            //$word->Documents->Add();
-            $word->Documents->Open($path);
-            $word->ActiveDocument->ContentControls[1]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);
-            $word->ActiveDocument->ContentControls[2]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dateContract']);
-            $word->ActiveDocument->ContentControls[3]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['fullname']);
-            $word->ActiveDocument->ContentControls[4]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzhrod']." ".Yii::$app->request->post()['rukovrod']);
-            $word->ActiveDocument->ContentControls[5]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['osnovaniye']);
-            $word->ActiveDocument->ContentControls[6]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['volumecifer']." (".Yii::$app->request->post()['volume']).")";
-            $word->ActiveDocument->ContentControls[7]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
-            $word->ActiveDocument->ContentControls[8]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
-            $word->ActiveDocument->ContentControls[9]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
-            $word->ActiveDocument->ContentControls[10]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
-            $word->ActiveDocument->ContentControls[11]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rekvisits']);
-			if (Yii::$app->request->post()['dolzh']!="Индивидуальный предприниматель"){
-				$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).Yii::$app->request->post()['name']);
-            } else {
-				$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).str_replace("ИП ","",str_replace("ип ","",str_replace("Ип ","",Yii::$app->request->post()['name']))));
+			if (Yii::$app->request->post()['numberContract'] == '0') {
+				$path = Yii::getAlias('@app').'/web/dogovor.docx';
+				//$word->Documents->Add();
+				$word->Documents->Open($path);
+				$word->ActiveDocument->ContentControls[1]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);
+				$word->ActiveDocument->ContentControls[2]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dateContract']);
+				$word->ActiveDocument->ContentControls[3]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['fullname']);
+				$word->ActiveDocument->ContentControls[4]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzhrod']." ".Yii::$app->request->post()['rukovrod']);
+				$word->ActiveDocument->ContentControls[5]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['osnovaniye']);
+				$word->ActiveDocument->ContentControls[6]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['volumecifer']." (".Yii::$app->request->post()['volume']).")";
+				$word->ActiveDocument->ContentControls[7]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
+				$word->ActiveDocument->ContentControls[8]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
+				$word->ActiveDocument->ContentControls[9]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
+				$word->ActiveDocument->ContentControls[10]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
+				$word->ActiveDocument->ContentControls[11]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rekvisits']);
+				if (Yii::$app->request->post()['dolzh']!="Индивидуальный предприниматель"){
+					$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).Yii::$app->request->post()['name']);
+				} else {
+					$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).str_replace("ИП ","",str_replace("ип ","",str_replace("Ип ","",Yii::$app->request->post()['name']))));
+				}
+				$word->ActiveDocument->ContentControls[13]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rukovinit']);
+				$word->ActiveDocument->ContentControls[14]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['prilozh']);
+				if (Yii::$app->request->post()['dolzh']!="Индивидуальный предприниматель"){
+					$word->ActiveDocument->ContentControls[15]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).Yii::$app->request->post()['name']);
+				} else {
+					$word->ActiveDocument->ContentControls[15]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).str_replace("ИП ","",str_replace("ип ","",str_replace("Ип ","",Yii::$app->request->post()['name']))));
+				}
+				$word->ActiveDocument->ContentControls[16]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rukovinit']);
+				
+				$filename = "Dogovor_SOUT_".date("Y-m-d___H-i-s")."___".iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);
+			} else {
+				$path = Yii::getAlias('@app').'/web/dogovor2.docx';
+				//$word->Documents->Add();
+				$word->Documents->Open($path);
+				$word->ActiveDocument->ContentControls[1]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);
+				$word->ActiveDocument->ContentControls[2]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dateContract']);
+				$word->ActiveDocument->ContentControls[3]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['fullname']);
+				$word->ActiveDocument->ContentControls[4]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzhrod']." ".Yii::$app->request->post()['rukovrod']);
+				$word->ActiveDocument->ContentControls[5]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['osnovaniye']);
+				$word->ActiveDocument->ContentControls[6]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
+				$word->ActiveDocument->ContentControls[7]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
+				$word->ActiveDocument->ContentControls[8]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
+				$word->ActiveDocument->ContentControls[9]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['sum']);
+				$word->ActiveDocument->ContentControls[10]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['name']);
+				$word->ActiveDocument->ContentControls[11]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rekvisits']);
+				if (Yii::$app->request->post()['dolzh']!="Индивидуальный предприниматель"){
+					$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).Yii::$app->request->post()['name']);
+				} else {
+					$word->ActiveDocument->ContentControls[12]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).str_replace("ИП ","",str_replace("ип ","",str_replace("Ип ","",Yii::$app->request->post()['name']))));
+				}
+				$word->ActiveDocument->ContentControls[13]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rukovinit']);
+				
+				$filename = "Dogovor_PK_".date("Y-m-d___H-i-s")."___".iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);	
 			}
-			$word->ActiveDocument->ContentControls[13]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rukovinit']);
-            $word->ActiveDocument->ContentControls[14]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['prilozh']);
-			if (Yii::$app->request->post()['dolzh']!="Индивидуальный предприниматель"){
-				$word->ActiveDocument->ContentControls[15]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).Yii::$app->request->post()['name']);
-            } else {
-				$word->ActiveDocument->ContentControls[15]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['dolzh'].chr(13).chr(10).str_replace("ИП ","",str_replace("ип ","",str_replace("Ип ","",Yii::$app->request->post()['name']))));
-			}
-            $word->ActiveDocument->ContentControls[16]->Range->Text=iconv("UTF-8", "cp1251", Yii::$app->request->post()['rukovinit']);
             
-            $filename = "Dogovor_".date("Y-m-d___H-i-s")."___".iconv("UTF-8", "cp1251", Yii::$app->request->post()['numberContract']);
             $word->ActiveDocument->SaveAs(Yii::getAlias('@app').'/web/docs/'.$filename.'.doc');
             $word->ActiveDocument->Close(false);
             $word->Quit();

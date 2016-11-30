@@ -279,7 +279,7 @@ if ($contracts) {
            ActiveForm::end();    
            Modal::end();
     }
-	$last_contr = Contracts::find()->orderBy('id DESC')->limit(3)->all();
+	$last_contr = Contracts::find()->orderBy('id DESC')->offset(3)->limit(3)->all();
 	$str = "";
 	$count1 = count($last_contr);
 	$i=1;
@@ -293,8 +293,26 @@ if ($contracts) {
 		}
 		$i=$i+1;
 	}
-	$tab3=$tab3."<span style='color:#848484;'>Последние созданные договоры<div style='font-size:8pt;'>".$str."</div></span>.<br/>";
-    $tab3=$tab3.Html::a('Создать договор', Url::to(['site/clients','kontrid'=>Yii::$app->request->get()['kontrid'],'contracts'=>1,'contrid'=>'new']), ['class' => 'btn btn-success'])."<br/><br/>";
+	$tab3=$tab3."<div class='col-lg-12'><span style='color:#848484;'><div class='col-lg-12'>Последние созданные договоры</div><div style='font-size:8pt;' class='col-lg-2'>".$str."</div></span>";
+    	//x2
+        $last_contr = Contracts::find()->orderBy('id DESC')->limit(3)->all();
+	$str = "";
+	$count1 = count($last_contr);
+	$i=1;
+	foreach (array_reverse($last_contr) as $contr1){
+		if ($i==1) {
+			$str = $str."№".$contr1->numberContract." от ".$contr1->dateContract."<br/>";
+		} else if ($i==$count1) {
+			$str = $str." <span style='color:black'><b>№".$contr1->numberContract." от ".$contr1->dateContract."</b></span>";
+		} else {
+			$str = $str." №".$contr1->numberContract." от ".$contr1->dateContract."<br/>";
+		}
+		$i=$i+1;
+	}
+	$tab3=$tab3."<div class='col-lg-2'><span style='color:#848484;'><div style='font-size:8pt;'>".$str."</div></span><br/></div></div>";
+    
+        
+        $tab3=$tab3.Html::a('Создать договор', Url::to(['site/clients','kontrid'=>Yii::$app->request->get()['kontrid'],'contracts'=>1,'contrid'=>'new']), ['class' => 'btn btn-success'])."<br/><br/>";
     $tab3=$tab3.GridView::widget([
             'options'=>[
                 'style'=>'width:100%'

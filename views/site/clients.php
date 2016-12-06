@@ -774,16 +774,24 @@ function num_propis($num){ // $num - цело число
         ],
     ]); 
    $isIp = strlen((string)$model->inn)==12;
+   
+   $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+    $this->registerCssFile('https://cdn.jsdelivr.net/jquery.suggestions/16.8/css/suggestions.css');
+    $this->registerJsFile('https://cdn.jsdelivr.net/jquery.suggestions/16.8/js/jquery.suggestions.min.js');
+    $this->registerJsFile('sugg.js');
    ?>
 
-        <?php $tab1=$tab1.$form->field($model, 'inn',[
+        <?php 
+        
+        $tab1 = '<div class="form-group"><label class="labelMy col-lg-1 control-label" for="sugg">Организация или физ.лицо</label>'.$tab1.Html::input("text","sugg","",['id'=>'sugg1','class'=>'form-control inputMy','placeholder'=>'ИНН, наименование или другой реквизит']).'</div><hr/>';
+        $tab1=$tab1.$form->field($model, 'inn',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control'],
                 'labelOptions'=>['class'=>'labelMy col-lg-1 control-label']
-            ])->widget(MaskedInput::className(),['mask'=>'999999999999','options'=>['class'=>'inputMy form-control','onChange'=>'changeForm();']])->label('ИНН'); 
+            ])->widget(MaskedInput::className(),['mask'=>'999999999999','options'=>['class'=>'inputMy form-control','onChange'=>'changeForm2();']])->label('ИНН <span style="color:#A9A9A9"><i>(вводить первым!)</i></span>'); 
 			//])->label('ИНН'); 
-$tab1=$tab1."<div class='myBtnInn'>";
-$tab1=$tab1. Html::button('Заполнить по ИНН данные контрагента',['class'=>'btn btn-primary','onClick'=>'getJsonInn();'])."</div>";
+//$tab1=$tab1."<div class='myBtnInn'>";
+//$tab1=$tab1. Html::button('Заполнить по ИНН данные контрагента',['class'=>'btn btn-primary','onClick'=>'getJsonInn();'])."</div>";
  $tab1=$tab1.$form->field($model, 'fullName',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control'],
@@ -802,12 +810,12 @@ $tab1=$tab1.$form->field($model, 'name1c',[
 $tab1=$tab1.$form->field($model, 'address',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control','style'=>($isIp)?'display:none':'display:inline-block'],
-                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline']
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline-block']
             ])->label('Юр. адрес');
 $tab1=$tab1.$form->field($model, 'addressreg',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}",
                 'inputOptions'=>['class'=>'inputMy form-control','style'=>'display:none','style'=>($isIp)?'display:inline-block':'display:none'],
-                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>'display:none','style'=>($isIp)?'display:inline':'display:none']
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>'display:none','style'=>($isIp)?'display:inline-block':'display:none']
             ])->label('Адрес регистрации ИП');
 $tab1=$tab1.$form->field($model, 'addressfact',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
@@ -817,7 +825,7 @@ $tab1=$tab1.$form->field($model, 'addressfact',[
 $tab1=$tab1.$form->field($model, 'kpp',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",
                 'inputOptions'=>['class'=>'inputMy form-control','style'=>($isIp)?'display:none':'display:inline-block'],
-                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline']
+                'labelOptions'=>['class'=>'labelMy col-lg-1 control-label','style'=>($isIp)?'display:none':'display:inline-block']
             ])->label('КПП');
 $tab1=$tab1.$form->field($model, 'okpo',[
                 'template' => "{hint}{beginLabel}{labelTitle}{endLabel}{input}{error}",

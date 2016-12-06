@@ -799,7 +799,7 @@ function GetIdIp (data)
 	$('#organization-kpp').val("");
 }
 
-function changeForm(){
+function changeForm2(){
     inn = $('#organization-inn').val().replace(/[_]+/g,"");
     if (inn.length == 12){
         $('#organization-address').val("");
@@ -1081,3 +1081,4 @@ function changeForm(){
 	}
 	
 }
+

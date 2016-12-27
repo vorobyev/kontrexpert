@@ -1,6 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+$pass = require(__DIR__ . '/pass.php');
 
 $config = [
     'id' => 'basic',
@@ -24,7 +25,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'd1f2v3g4b5h6',
+            'cookieValidationKey' => 'sfbgfhewr4tgt',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -46,7 +47,6 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'ssl://smtp.yandex.ru',
                 'username' => 'ekspert-bel@yandex.ru',
-                'password' => '20072016eksp',
                 'port' => '465'
                 //'encryption' => 'SSL',
             ],
@@ -102,5 +102,7 @@ $config = [
 //        'class' => 'yii\gii\Module',
 //    ];
 //}
+
+$config['components']['mailer']['transport'] = $config['components']['mailer']['transport']+$pass;
 
 return $config;

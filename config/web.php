@@ -43,7 +43,7 @@ $config = [
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => false,
-			'transport' => [
+	    'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'ssl://smtp.yandex.ru',
                 'username' => 'ekspert-bel@yandex.ru',
